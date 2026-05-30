@@ -1,0 +1,293 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+@font-face {
+	font-family: 'Moredya';
+	src: url('/fonts/Moredya-Regular.ttf') format('truetype');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@layer base {
+	html,
+	body {
+		height: 100%;
+	}
+
+	body {
+		margin: 0;
+		color-scheme: dark;
+		font-family:
+			system-ui,
+			-apple-system,
+			Segoe UI,
+			Roboto,
+			Arial,
+			sans-serif;
+
+		/* Warm starfield: ivory stars, deep violet/amethyst nebula */
+		background-color: #08060e;
+		background-image:
+			radial-gradient(1px 1px at 12% 18%, rgb(255 250 235 / 0.30) 50%, transparent 55%),
+			radial-gradient(1px 1px at 72% 26%, rgb(255 250 235 / 0.22) 50%, transparent 55%),
+			radial-gradient(1px 1px at 42% 62%, rgb(255 250 235 / 0.26) 50%, transparent 55%),
+			radial-gradient(1px 1px at 88% 74%, rgb(255 250 235 / 0.18) 50%, transparent 55%),
+			radial-gradient(1px 1px at 22% 82%, rgb(255 250 235 / 0.15) 50%, transparent 55%),
+			radial-gradient(800px 500px at 50% 40%, rgb(100 60 200 / 0.13), transparent 60%);
+		background-attachment: fixed;
+	}
+
+	a {
+		color: inherit;
+		text-decoration: none;
+	}
+}
+
+@layer utilities {
+	.font-display {
+		font-family:
+			'Moredya',
+			system-ui,
+			-apple-system,
+			Segoe UI,
+			Roboto,
+			Arial,
+			sans-serif;
+	}
+
+	/* Used on the top-level section in +layout.svelte */
+	.bg-space {
+		background: transparent;
+	}
+
+	.section-title {
+		overflow-wrap: anywhere;
+	}
+}
+
+@layer components {
+	.moon-shell {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 1 / 1;
+		display: grid;
+		place-items: center;
+		isolation: isolate;
+	}
+
+	.moon {
+		--moon-shadow-x: 0%;
+		--moon-shadow-opacity: 0;
+
+		position: relative;
+		width: 82%;
+		height: 82%;
+		aspect-ratio: 1 / 1;
+		border-radius: 9999px;
+		overflow: hidden;
+
+		/* warm ivory/amber glow, animated */
+		filter: drop-shadow(0 0 18px rgb(240 220 170 / 0.12))
+			drop-shadow(0 0 50px rgb(190 140 70 / 0.08));
+		animation: moon-breathe 8s ease-in-out infinite;
+	}
+
+	.moon__img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		border-radius: 9999px;
+		user-select: none;
+		pointer-events: none;
+
+		/* Subtle polish so it feels more “premium” */
+		filter: contrast(1.03) saturate(0.98);
+		transform: translateZ(0);
+	}
+
+	/* Phase masking: a dark disk shifted to reveal a crescent */
+	.moon::after {
+		content: '';
+		position: absolute;
+		inset: -18%;
+		border-radius: 9999px;
+		background: radial-gradient(circle at 35% 35%, rgb(0 0 0 / 0.92), rgb(0 0 0 / 0.98));
+		opacity: var(--moon-shadow-opacity);
+		transform: translateX(var(--moon-shadow-x));
+		transition:
+			transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1),
+			opacity 260ms ease;
+	}
+
+	/* Full moon: no shadow */
+	.moon[data-phase='full'] {
+		--moon-shadow-opacity: 0;
+		--moon-shadow-x: 0%;
+	}
+
+	/* New moon: almost invisible disk — no pulse, just a whisper of glow */
+	.moon[data-phase='new'] {
+		--moon-shadow-opacity: 0.95;
+		--moon-shadow-x: 0%;
+		filter: drop-shadow(0 0 10px rgb(240 220 170 / 0.05))
+			drop-shadow(0 0 28px rgb(190 140 70 / 0.04));
+		animation: none;
+	}
+
+	/* Waxing: light on the right */
+	.moon[data-phase='waxing'] {
+		--moon-shadow-opacity: 0.92;
+		--moon-shadow-x: -44%;
+	}
+
+	/* Waning: light on the left */
+	.moon[data-phase='waning'] {
+		--moon-shadow-opacity: 0.92;
+		--moon-shadow-x: 44%;
+	}
+
+	/* Home hero: large moon peeking from below the viewport with a crisp arc */
+	.hero-moon-bottom {
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		width: min(90vw, 900px);
+		/* translateY(25%) moves the center R/2 below the viewport bottom,
+		   exposing ~25% of the moon height as a clean arc above the bottom edge */
+		transform: translateX(-50%) translateY(55%);
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	@keyframes moon-breathe {
+		0%,
+		100% {
+			filter: drop-shadow(0 0 18px rgb(240 220 170 / 0.12))
+				drop-shadow(0 0 50px rgb(190 140 70 / 0.08));
+		}
+		50% {
+			filter: drop-shadow(0 0 28px rgb(240 220 170 / 0.22))
+				drop-shadow(0 0 70px rgb(190 140 70 / 0.14));
+		}
+	}
+
+	.transition-wrapper {
+		display: grid;
+	}
+
+	.transition-wrapper > * {
+		grid-area: 1 / 1;
+	}
+
+	.moon-arrows {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		z-index: 2;
+	}
+
+	.moon-arrow {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		padding: 8px 0;
+		border: 0;
+		background: transparent;
+		color: rgb(255 255 255 / 0.45);
+		cursor: pointer;
+		user-select: none;
+		pointer-events: auto;
+		-webkit-tap-highlight-color: transparent;
+		transition: color 160ms ease;
+	}
+
+	.moon-arrow--left {
+		right: calc(100% + 14px);
+	}
+
+	.moon-arrow--right {
+		left: calc(100% + 14px);
+	}
+
+	.moon-arrow__chev {
+		font-size: 34px;
+		line-height: 1;
+	}
+
+	/* Label floats below the chevron, out of flow so button width stays constant */
+	.moon-arrow__label {
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		transform: translateX(-50%) translateY(-4px);
+		font-size: 10px;
+		letter-spacing: 0.25em;
+		color: rgb(255 255 255 / 0.72);
+		opacity: 0;
+		white-space: nowrap;
+		transition:
+			opacity 160ms ease,
+			transform 200ms ease;
+	}
+
+	.moon-arrow:hover {
+		color: rgb(255 255 255 / 0.92);
+	}
+
+	.moon-arrow:hover .moon-arrow__label {
+		opacity: 1;
+		transform: translateX(-50%) translateY(2px);
+	}
+
+	.moon-arrow:focus-visible {
+		outline: 2px solid rgb(255 255 255 / 0.55);
+		outline-offset: 4px;
+		border-radius: 4px;
+	}
+
+	.moon-mobile {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 10px;
+		padding: 12px 12px;
+		border-radius: 9999px;
+		border: 1px solid rgb(255 255 255 / 0.1);
+		background: rgb(255 255 255 / 0.04);
+		color: rgb(255 255 255 / 0.85);
+		letter-spacing: 0.22em;
+		font-size: 11px;
+		transition:
+			background 160ms ease,
+			border-color 160ms ease,
+			transform 160ms ease;
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	.moon-mobile:hover {
+		background: rgb(255 255 255 / 0.06);
+		border-color: rgb(255 255 255 / 0.16);
+		transform: translateY(-1px);
+	}
+
+	.moon-mobile:focus-visible {
+		outline: 2px solid rgb(255 255 255 / 0.55);
+		outline-offset: 3px;
+	}
+
+	.moon-mobile__chev {
+		font-size: 22px;
+		line-height: 1;
+		color: rgb(255 255 255 / 0.8);
+	}
+
+	.moon-mobile__label {
+		white-space: nowrap;
+	}
+
+}
