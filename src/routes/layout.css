@@ -314,6 +314,52 @@
 		line-height: 1.55;
 	}
 
+	/* --- Mobile burger menu --- */
+
+	/* Single fixed button — always at the same screen coords, swaps ≡ ↔ ✕ */
+	.burger-btn {
+		position: fixed;
+		/* top: centres the 36px button box (24px icon + 6px pad each side) in the h-20 (80px) nav */
+		top: 22px;
+		right: 1.5rem;
+		z-index: 100;
+		background: transparent;
+		border: none;
+		color: rgb(255 255 255 / 0.7);
+		cursor: pointer;
+		padding: 6px;
+		line-height: 0;
+		-webkit-tap-highlight-color: transparent;
+	}
+	/* h-24 (96px) nav on sm+ screens: re-centre */
+	@media (min-width: 640px) {
+		.burger-btn { top: 30px; }
+	}
+
+	.mobile-menu {
+		position: fixed;
+		inset: 0;
+		z-index: 50;
+		background: #08060e;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 2.5rem;
+	}
+
+	.mobile-menu-link {
+		font-family: 'Moredya', system-ui, sans-serif;
+		font-size: 2.25rem;
+		font-weight: 550;
+		letter-spacing: 0.05em;
+		color: rgb(255 255 255 / 0.35);
+		text-decoration: none;
+		transition: color 150ms ease;
+	}
+	.mobile-menu-link.active { color: rgb(255 255 255 / 0.95); }
+	.mobile-menu-link:hover  { color: rgb(255 255 255 / 0.65); }
+
 	/* --- About page --- */
 
 	.about-layout {
