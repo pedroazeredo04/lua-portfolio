@@ -1,5 +1,5 @@
 <svelte:head>
-	<title>ABOUT | SAILORLUA</title>
+	<title>sailorlua</title>
 </svelte:head>
 
 <div class="about-layout">

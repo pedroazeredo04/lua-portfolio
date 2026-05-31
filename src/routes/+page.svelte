@@ -1,3 +1,3 @@
 <svelte:head>
-	<title>HOME | SAILORLUA</title>
+	<title>sailorlua</title>
 </svelte:head>
