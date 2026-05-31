@@ -4,63 +4,40 @@
 	import moonTexture from '$lib/assets/moon.webp';
 
 	import { page } from '$app/state';
-	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { fade } from 'svelte/transition';
-
-	type Phase = 'full' | 'new' | 'waxing' | 'waning';
 
 	type Section = {
 		id: 'home' | 'about' | 'projects' | 'contact';
 		path: '/' | '/about' | '/projects' | '/contact';
-		phase: Phase;
-		label: string;
 		title: string;
 		description: string;
-		cardTitle: string;
-		cardBody: string;
 	};
 
 	const sections: Section[] = [
 		{
 			id: 'home',
 			path: '/',
-			phase: 'full',
-			label: 'Full Moon',
 			title: 'SAILORLUA',
-			description: 'Portfólio de Luane Catarina Berti Santos',
-			cardTitle: 'Welcome',
-			cardBody: 'Click the arrows to navigate.'
+			description: 'Portfólio de Luane Catarina Berti Santos'
 		},
 		{
 			id: 'about',
 			path: '/about',
-			phase: 'new',
-			label: 'New Moon',
 			title: 'ABOUT',
-			description: 'Discover more about me',
-			cardTitle: 'Profile',
-			cardBody: 'Minimal placeholder for now.'
+			description: 'Discover more about me'
 		},
 		{
 			id: 'projects',
 			path: '/projects',
-			phase: 'waxing',
-			label: 'Waxing Moon',
 			title: 'PROJECTS',
-			description: 'Selected work, experiments and hobby projects.',
-			cardTitle: 'Highlights',
-			cardBody: 'Minimal placeholder for now.'
+			description: 'Selected work, experiments and hobby projects.'
 		},
 		{
 			id: 'contact',
 			path: '/contact',
-			phase: 'waning',
-			label: 'Waning Moon',
 			title: 'CONTACT',
-			description: 'Say hi. Links and ways to reach me.',
-			cardTitle: 'Links',
-			cardBody: 'Minimal placeholder for now.'
+			description: 'Say hi. Links and ways to reach me.'
 		}
 	];
 
@@ -78,21 +55,9 @@
 		)
 	);
 	const activeSection = $derived(sections[activeIndex]);
-	const prevSection = $derived(sections[(activeIndex - 1 + sections.length) % sections.length]);
-	const nextSection = $derived(sections[(activeIndex + 1) % sections.length]);
-
-	function navigateTo(path: Section['path']) {
-		if (path === activeSection.path) return;
-		goto(resolve(path), { noScroll: true });
-	}
 
 	function preventFocusOnPointerDown(event: PointerEvent) {
 		event.preventDefault();
-	}
-
-	function clickZone(e: MouseEvent, path: Section['path']) {
-		(e.currentTarget as HTMLButtonElement).blur();
-		navigateTo(path);
 	}
 
 	function scrollToPanel2() {
@@ -113,7 +78,6 @@
 <section
 	class="bg-space text-white"
 	class:home-scroll={activeSection.id === 'home'}
-	class:non-home={activeSection.id !== 'home'}
 >
 	{#if activeSection.id === 'home'}
 		<!-- Panel 1: hero -->
@@ -136,8 +100,7 @@
 				</button>
 			</div>
 
-			<div class="relative z-10 grid h-screen grid-rows-[auto_1fr] grid-cols-12 gap-4 px-6 sm:px-10
-  pointer-events-none">
+			<div class="relative z-10 grid h-screen grid-rows-[auto_1fr] grid-cols-12 gap-4 px-6 sm:px-10 pointer-events-none">
 				<nav class="relative col-span-12 flex h-20 items-center justify-center text-xs tracking-[0.35em] text-white/70 sm:h-24 pointer-events-auto">
 					<div class="font-display select-none text-sm tracking-[0.3em] text-white/90">SAILORLUA</div>
 					<div class="absolute right-0 hidden items-center gap-6 lg:flex">
@@ -197,17 +160,10 @@
 		</div>
 
 	{:else}
-		<!-- Other pages: three-column layout -->
-		<div
-			class="relative z-10 grid min-h-screen grid-cols-12 gap-4 px-6 sm:px-10 sm:grid-rows-[auto_1fr]"
-			transition:fade={{ duration: 300 }}
-		>
-			<nav
-				class="relative col-span-12 flex h-20 items-center justify-center text-xs tracking-[0.35em] text-white/70 sm:h-24"
-			>
+		<div transition:fade={{ duration: 300 }}>
+			<nav class="relative flex h-20 items-center justify-center px-6 text-xs tracking-[0.35em] text-white/70 sm:h-24 sm:px-10">
 				<div class="font-display select-none text-sm tracking-[0.3em] text-white/90">SAILORLUA</div>
-
-				<div class="absolute right-0 hidden items-center gap-6 lg:flex">
+				<div class="absolute right-6 hidden items-center gap-6 lg:flex sm:right-10">
 					{#each sections as s (s.id)}
 						<a
 							href={resolve(s.path)}
@@ -219,100 +175,7 @@
 					{/each}
 				</div>
 			</nav>
-
-			<div
-				class="col-span-12 mt-6 flex min-w-0 flex-col gap-10 sm:col-span-3 sm:col-start-2 sm:mt-0 sm:justify-center"
-				in:fade={{ duration: 200, delay: 100 }}
-				out:fade={{ duration: 120 }}
-			>
-				<div class="transition-wrapper">
-					{#key activeSection.id}
-						<div in:fade={{ duration: 200, delay: 130 }} out:fade={{ duration: 130 }}>
-							<h1 class="section-title font-display text-6xl font-normal tracking-wide sm:text-7xl">
-								{activeSection.title}
-							</h1>
-							<p class="mt-10 max-w-prose text-sm text-white/60">{activeSection.description}</p>
-						</div>
-					{/key}
-				</div>
-			</div>
-
-			<div
-				class="col-span-12 sm:col-span-4 sm:col-start-5 sm:flex sm:items-center sm:justify-center"
-				in:fade={{ duration: 200, delay: 100 }}
-				out:fade={{ duration: 120 }}
-			>
-				<div class="mx-auto w-full max-w-[320px] sm:max-w-[420px]">
-					<div class="moon-shell">
-						<div class="moon" data-phase={activeSection.phase} aria-label={activeSection.label}>
-							<img src={moonTexture} alt="Moon" class="moon__img" draggable="false" />
-						</div>
-
-						<div class="moon-arrows hidden sm:block">
-							<button
-								class="moon-arrow moon-arrow--left"
-								aria-label={`Previous: ${prevSection.title}`}
-								onpointerdown={preventFocusOnPointerDown}
-								onclick={(e) => clickZone(e, prevSection.path)}
-							>
-								<span class="moon-arrow__chev">‹</span>
-								<span class="moon-arrow__label">{prevSection.title}</span>
-							</button>
-							<button
-								class="moon-arrow moon-arrow--right"
-								aria-label={`Next: ${nextSection.title}`}
-								onpointerdown={preventFocusOnPointerDown}
-								onclick={(e) => clickZone(e, nextSection.path)}
-							>
-								<span class="moon-arrow__chev">›</span>
-								<span class="moon-arrow__label">{nextSection.title}</span>
-							</button>
-						</div>
-					</div>
-
-					<div class="mt-5 grid grid-cols-2 gap-3 sm:hidden">
-						<button
-							type="button"
-							class="moon-mobile"
-							onpointerdown={preventFocusOnPointerDown}
-							onclick={(e) => clickZone(e, prevSection.path)}
-						>
-							<span class="moon-mobile__chev" aria-hidden="true">‹</span>
-							<span class="moon-mobile__label">{prevSection.title}</span>
-						</button>
-						<button
-							type="button"
-							class="moon-mobile moon-mobile--right"
-							onpointerdown={preventFocusOnPointerDown}
-							onclick={(e) => clickZone(e, nextSection.path)}
-						>
-							<span class="moon-mobile__label">{nextSection.title}</span>
-							<span class="moon-mobile__chev" aria-hidden="true">›</span>
-						</button>
-					</div>
-				</div>
-			</div>
-
-			<div
-				class="col-span-12 sm:col-span-2 sm:col-start-10 sm:flex sm:flex-col sm:justify-center"
-				in:fade={{ duration: 200, delay: 100 }}
-				out:fade={{ duration: 120 }}
-			>
-				<div class="transition-wrapper">
-					{#key activeSection.id}
-						<div
-							class="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm"
-							in:fade={{ duration: 200, delay: 130 }}
-							out:fade={{ duration: 130 }}
-						>
-							<div class="text-xs tracking-[0.25em] text-white/60">{activeSection.cardTitle}</div>
-							<div class="mt-4 text-sm text-white/75">{activeSection.cardBody}</div>
-						</div>
-					{/key}
-				</div>
-			</div>
+			<div class="sr-only">{@render children()}</div>
 		</div>
 	{/if}
-
-	<div class="sr-only">{@render children()}</div>
 </section>

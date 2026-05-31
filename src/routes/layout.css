@@ -126,27 +126,6 @@
 		--moon-shadow-x: 0%;
 	}
 
-	/* New moon: almost invisible disk — no pulse, just a whisper of glow */
-	.moon[data-phase='new'] {
-		--moon-shadow-opacity: 0.95;
-		--moon-shadow-x: 0%;
-		filter: drop-shadow(0 0 10px rgb(240 220 170 / 0.05))
-			drop-shadow(0 0 28px rgb(190 140 70 / 0.04));
-		animation: none;
-	}
-
-	/* Waxing: light on the right */
-	.moon[data-phase='waxing'] {
-		--moon-shadow-opacity: 0.92;
-		--moon-shadow-x: -44%;
-	}
-
-	/* Waning: light on the left */
-	.moon[data-phase='waning'] {
-		--moon-shadow-opacity: 0.92;
-		--moon-shadow-x: 44%;
-	}
-
 	/* Home hero: large moon peeking from below the viewport with a crisp arc */
 	.hero-moon-bottom {
 		position: absolute;
@@ -172,124 +151,6 @@
 		}
 	}
 
-	.transition-wrapper {
-		display: grid;
-	}
-
-	.transition-wrapper > * {
-		grid-area: 1 / 1;
-	}
-
-	.moon-arrows {
-		position: absolute;
-		inset: 0;
-		pointer-events: none;
-		z-index: 2;
-	}
-
-	.moon-arrow {
-		position: absolute;
-		top: 50%;
-		transform: translateY(-50%);
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 44px;
-		padding: 8px 0;
-		border: 0;
-		background: transparent;
-		color: rgb(255 255 255 / 0.45);
-		cursor: pointer;
-		user-select: none;
-		pointer-events: auto;
-		-webkit-tap-highlight-color: transparent;
-		transition: color 160ms ease;
-	}
-
-	.moon-arrow--left {
-		right: calc(100% + 14px);
-	}
-
-	.moon-arrow--right {
-		left: calc(100% + 14px);
-	}
-
-	.moon-arrow__chev {
-		font-size: 34px;
-		line-height: 1;
-	}
-
-	/* Label floats below the chevron, out of flow so button width stays constant */
-	.moon-arrow__label {
-		position: absolute;
-		top: 100%;
-		left: 50%;
-		transform: translateX(-50%) translateY(-4px);
-		font-size: 10px;
-		letter-spacing: 0.25em;
-		color: rgb(255 255 255 / 0.72);
-		opacity: 0;
-		white-space: nowrap;
-		transition:
-			opacity 160ms ease,
-			transform 200ms ease;
-	}
-
-	.moon-arrow:hover {
-		color: rgb(255 255 255 / 0.92);
-	}
-
-	.moon-arrow:hover .moon-arrow__label {
-		opacity: 1;
-		transform: translateX(-50%) translateY(2px);
-	}
-
-	.moon-arrow:focus-visible {
-		outline: 2px solid rgb(255 255 255 / 0.55);
-		outline-offset: 4px;
-		border-radius: 4px;
-	}
-
-	.moon-mobile {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 10px;
-		padding: 12px 12px;
-		border-radius: 9999px;
-		border: 1px solid rgb(255 255 255 / 0.1);
-		background: rgb(255 255 255 / 0.04);
-		color: rgb(255 255 255 / 0.85);
-		letter-spacing: 0.22em;
-		font-size: 11px;
-		transition:
-			background 160ms ease,
-			border-color 160ms ease,
-			transform 160ms ease;
-		-webkit-tap-highlight-color: transparent;
-	}
-
-	.moon-mobile:hover {
-		background: rgb(255 255 255 / 0.06);
-		border-color: rgb(255 255 255 / 0.16);
-		transform: translateY(-1px);
-	}
-
-	.moon-mobile:focus-visible {
-		outline: 2px solid rgb(255 255 255 / 0.55);
-		outline-offset: 3px;
-	}
-
-	.moon-mobile__chev {
-		font-size: 22px;
-		line-height: 1;
-		color: rgb(255 255 255 / 0.8);
-	}
-
-	.moon-mobile__label {
-		white-space: nowrap;
-	}
-
 	/* --- Home two-panel scroll --- */
 
 	.home-scroll {
@@ -300,12 +161,6 @@
 		scrollbar-width: none;
 	}
 	.home-scroll::-webkit-scrollbar { display: none; }
-
-	.non-home {
-		position: relative;
-		min-height: 100vh;
-		overflow: hidden;
-	}
 
 	.home-panel {
 		position: relative;
