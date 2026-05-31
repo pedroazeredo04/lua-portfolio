@@ -16,5 +16,14 @@
 	<div class="about-arch-wrap">
 		<div class="about-arch-frame"></div>
 		<div class="about-arch"></div>
+		<div class="arch-moons">
+			<span class="arch-moon-sphere"></span>
+			<span class="arch-moon-sphere"></span>
+			<span class="arch-moon-sphere"></span>
+			<span class="arch-moon-sphere"></span>
+			<span class="arch-moon-sphere"></span>
+			<span class="arch-moon-sphere"></span>
+			<span class="arch-moon-sphere"></span>
+		</div>
 	</div>
 </div>

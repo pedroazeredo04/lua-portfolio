@@ -13,6 +13,7 @@
 	html,
 	body {
 		height: 100%;
+		overflow-x: hidden;
 	}
 
 	body {
@@ -330,6 +331,7 @@
 		.about-layout {
 			flex-direction: column;
 			justify-content: flex-start;
+			gap: 5rem;
 			padding-top: 3rem;
 			height: auto;
 			min-height: calc(100vh - 6rem);
@@ -398,5 +400,52 @@
 		background-size: cover;
       	background-position: center;
 	}
+
+	/* 7 spheres arranged in a semicircular arc above the arch */
+	.arch-moons {
+		--arch-w: min(36vw, 40vh, 320px);
+		/* radius: just outside the frame top semicircle (frame radius = arch-w/2 + 12px) */
+		--r: calc(var(--arch-w) * 0.5 + 35px);
+		position: absolute;
+		/* center at the arch's top-semicircle center: 50% down wrap, then up arch-w/4 */
+		top: calc(50% - var(--arch-w) * 0.25);
+		left: 50%;
+		width: 0;
+		height: 0;
+		z-index: 3;
+		pointer-events: none;
+	}
+
+	.arch-moon-sphere {
+		position: absolute;
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		overflow: hidden;
+		background: rgb(240 200 80);
+		box-shadow: 0 0 8px rgb(240 200 80 / 0.55), 0 0 18px rgb(240 160 40 / 0.25);
+		left: calc(sin(var(--a)) * var(--r));
+		top: calc(-1 * cos(var(--a)) * var(--r));
+		transform: translate(-50%, -50%);
+	}
+
+	/* Dark overlay clipped to sphere boundary — offset to reveal a crescent */
+	.arch-moon-sphere::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: 50%;
+		background: #08060e;
+		transform: translateX(calc(var(--side, 1) * var(--offset, 200%)));
+	}
+
+	/* Centre = full moon (overlay at 200% → off-screen); outer = progressively covered */
+	.arch-moon-sphere:nth-child(1) { --a: -45deg; --side: -1; --offset: 20%; }
+	.arch-moon-sphere:nth-child(2) { --a: -30deg; --side: -1; --offset: 40%; }
+	.arch-moon-sphere:nth-child(3) { --a: -15deg; --side: -1; --offset: 60%; }
+	.arch-moon-sphere:nth-child(4) { --a:   0deg; }
+	.arch-moon-sphere:nth-child(5) { --a:  15deg; --side:  1; --offset: 60%; }
+	.arch-moon-sphere:nth-child(6) { --a:  30deg; --side:  1; --offset: 40%; }
+	.arch-moon-sphere:nth-child(7) { --a:  45deg; --side:  1; --offset: 20%; }
 
 }
