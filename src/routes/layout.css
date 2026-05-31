@@ -33,8 +33,7 @@
 			radial-gradient(1px 1px at 72% 26%, rgb(255 250 235 / 0.22) 50%, transparent 55%),
 			radial-gradient(1px 1px at 42% 62%, rgb(255 250 235 / 0.26) 50%, transparent 55%),
 			radial-gradient(1px 1px at 88% 74%, rgb(255 250 235 / 0.18) 50%, transparent 55%),
-			radial-gradient(1px 1px at 22% 82%, rgb(255 250 235 / 0.15) 50%, transparent 55%),
-			radial-gradient(800px 500px at 50% 40%, rgb(100 60 200 / 0.13), transparent 60%);
+			radial-gradient(1px 1px at 22% 82%, rgb(255 250 235 / 0.15) 50%, transparent 55%);
 		background-attachment: fixed;
 	}
 
@@ -167,6 +166,15 @@
 		height: 100vh;
 		overflow: hidden;
 		scroll-snap-align: start;
+	}
+
+	.home-panel:first-child::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: radial-gradient(800px 500px at 50% 40%, rgb(100 60 200 / 0.13), transparent 60%);
+		pointer-events: none;
+		z-index: 0;
 	}
 
 	/* Moon peeking from the top of panel 2 — mirror of .hero-moon-bottom */
@@ -303,6 +311,80 @@
 		font-size: 0.72rem;
 		color: rgb(255 255 255 / 0.45);
 		line-height: 1.55;
+	}
+
+	/* --- About page --- */
+
+	.about-layout {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 5rem;
+		padding: 4rem 6rem;
+		min-height: calc(100vh - 6rem);
+		flex-wrap: wrap;
+	}
+
+	.about-text {
+		flex: 1 1 300px;
+		max-width: 480px;
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	}
+
+	.about-body {
+		color: rgb(255 255 255 / 0.6);
+		font-size: 0.95rem;
+		line-height: 1.8;
+		max-width: 42ch;
+	}
+
+	.about-arch-wrap {
+		position: relative;
+		flex: 0 0 auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.about-arch-wrap::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 800px;
+		height: 800px;
+		border-radius: 50%;
+		background: radial-gradient(circle, rgb(200 60 80 / 0.22) 0%, rgb(160 30 50 / 0.10) 40%, transparent 70%);
+		pointer-events: none;
+		z-index: 0;
+	}
+
+	.about-arch-frame {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: calc(min(36vw, 320px) + 24px);
+		aspect-ratio: 2.05 / 3;
+		border-radius: 50% 50% 0 0 / 33.33% 33.33% 0 0;
+		border: 1px solid rgb(255 255 255 / 0.12);
+		z-index: 0;
+		pointer-events: none;
+	}
+
+	.about-arch {
+		position: relative;
+		z-index: 1;
+		width: min(36vw, 320px);
+		aspect-ratio: 2 / 3;
+		border-radius: 50% 50% 0 0 / 33.33% 33.33% 0 0;
+		overflow: hidden;
+		background-image: url('/luane.jpeg');
+		background-size: cover;
+      	background-position: center;
 	}
 
 }

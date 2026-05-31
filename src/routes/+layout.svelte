@@ -175,7 +175,7 @@
 					{/each}
 				</div>
 			</nav>
-			<div class="sr-only">{@render children()}</div>
+			{@render children()}
 		</div>
 	{/if}
 </section>
