@@ -38,7 +38,7 @@
 			phase: 'new',
 			label: 'New Moon',
 			title: 'ABOUT',
-			description: 'A short story, skills, and what I love building.',
+			description: 'Discover more about me',
 			cardTitle: 'Profile',
 			cardBody: 'Minimal placeholder for now.'
 		},
@@ -48,7 +48,7 @@
 			phase: 'waxing',
 			label: 'Waxing Moon',
 			title: 'PROJECTS',
-			description: 'Selected work, experiments, and shipped things.',
+			description: 'Selected work, experiments and hobby projects.',
 			cardTitle: 'Highlights',
 			cardBody: 'Minimal placeholder for now.'
 		},
@@ -95,57 +95,131 @@
 		navigateTo(path);
 	}
 
+	function scrollToPanel2() {
+		const container = document.querySelector<HTMLElement>('.home-scroll');
+		if (container) container.scrollTop = container.clientHeight;
+	}
+
+	function scrollToPanel1() {
+		const container = document.querySelector<HTMLElement>('.home-scroll');
+		if (container) container.scrollTop = 0;
+	}
+
 	let { children } = $props();
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
-<section class="bg-space relative min-h-screen overflow-hidden text-white">
-
-	<!-- Home hero: large moon peeking from below, sits behind the z-10 grid -->
+<section
+	class="bg-space text-white"
+	class:home-scroll={activeSection.id === 'home'}
+	class:non-home={activeSection.id !== 'home'}
+>
 	{#if activeSection.id === 'home'}
-		<div class="hero-moon-bottom" transition:fade={{ duration: 400 }}>
-			<div class="moon-shell">
-				<div class="moon" data-phase="full" aria-label="Full Moon">
-					<img src={moonTexture} alt="" class="moon__img" draggable="false" />
+		<!-- Panel 1: hero -->
+		<div class="home-panel" transition:fade={{ duration: 300 }}>
+			<div class="hero-moon-bottom">
+				<div class="moon-shell">
+					<div class="moon" data-phase="full" aria-label="Full Moon">
+						<img src={moonTexture} alt="" class="moon__img" draggable="false" />
+					</div>
+				</div>
+				<button
+					class="scroll-down-arrow"
+					onclick={scrollToPanel2}
+					onpointerdown={preventFocusOnPointerDown}
+					aria-label="Explore sections"
+				>
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+						<polyline points="6 9 12 15 18 9"></polyline>
+					</svg>
+				</button>
+			</div>
+
+			<div class="relative z-10 grid h-screen grid-rows-[auto_1fr] grid-cols-12 gap-4 px-6 sm:px-10
+  pointer-events-none">
+				<nav class="relative col-span-12 flex h-20 items-center justify-center text-xs tracking-[0.35em] text-white/70 sm:h-24 pointer-events-auto">
+					<div class="font-display select-none text-sm tracking-[0.3em] text-white/90">SAILORLUA</div>
+					<div class="absolute right-0 hidden items-center gap-6 lg:flex">
+						{#each sections as s (s.id)}
+							<a
+								href={resolve(s.path)}
+								class="transition-colors duration-150 hover:text-white/80 {s.path === activeSection.path ? 'text-white/90' : 'text-white/45'}"
+								aria-current={s.path === activeSection.path ? 'page' : undefined}
+							>
+								{s.id === 'home' ? 'HOME' : s.title}
+							</a>
+						{/each}
+					</div>
+				</nav>
+
+				<div
+					class="col-span-12 flex flex-col items-center justify-start pt-[6vh] sm:pt-[12vh] text-center"
+					in:fade={{ duration: 220, delay: 180 }}
+					out:fade={{ duration: 150 }}
+				>
+					<h1 class="section-title font-display text-6xl font-normal tracking-wide sm:text-8xl">
+						{activeSection.title}
+					</h1>
+					<p class="mx-auto mt-8 max-w-sm text-xl text-white/50">{activeSection.description}</p>
 				</div>
 			</div>
 		</div>
-	{/if}
 
-	<div class="relative z-10 grid min-h-screen grid-cols-12 gap-4 px-6 sm:px-10 sm:grid-rows-[auto_1fr]">
-		<nav
-			class="relative col-span-12 flex h-20 items-center justify-center text-xs tracking-[0.35em] text-white/70 sm:h-24"
-		>
-			<div class="font-display select-none text-sm tracking-[0.3em] text-white/90">SAILORLUA</div>
+		<!-- Panel 2: navigation cards -->
+		<div class="home-panel">
+			<div class="hero-moon-top">
+				<div class="moon-shell">
+					<div class="moon" data-phase="full">
+						<img src={moonTexture} alt="" class="moon__img" draggable="false" />
+					</div>
+				</div>
+				<button
+					class="scroll-up-arrow"
+					onclick={scrollToPanel1}
+					onpointerdown={preventFocusOnPointerDown}
+					aria-label="Back to top"
+				>
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+						<polyline points="18 15 12 9 6 15"></polyline>
+					</svg>
+				</button>
+			</div>
 
-			<div class="absolute right-0 hidden items-center gap-6 sm:flex">
-				{#each sections as s (s.id)}
-					<a
-						href={resolve(s.path)}
-						class="transition-colors duration-150 hover:text-white/80 {s.path === activeSection.path ? 'text-white/90' : 'text-white/45'}"
-						aria-current={s.path === activeSection.path ? 'page' : undefined}
-					>
-						{s.title}
+			<div class="nav-cards">
+				{#each sections.slice(1) as s (s.id)}
+					<a href={resolve(s.path)} class="nav-card">
+						<span class="nav-card__title font-display">{s.title}</span>
+						<span class="nav-card__desc">{s.description}</span>
 					</a>
 				{/each}
 			</div>
-		</nav>
+		</div>
 
-		{#if activeSection.id === 'home'}
-			<!-- Home: centered title + description, moon is the background element -->
-			<div
-				class="col-span-12 flex flex-col items-center justify-start pt-[20vh] text-center"
-				in:fade={{ duration: 220, delay: 180 }}
-				out:fade={{ duration: 150 }}
+	{:else}
+		<!-- Other pages: three-column layout -->
+		<div
+			class="relative z-10 grid min-h-screen grid-cols-12 gap-4 px-6 sm:px-10 sm:grid-rows-[auto_1fr]"
+			transition:fade={{ duration: 300 }}
+		>
+			<nav
+				class="relative col-span-12 flex h-20 items-center justify-center text-xs tracking-[0.35em] text-white/70 sm:h-24"
 			>
-				<h1 class="section-title font-display text-7xl font-normal tracking-wide sm:text-9xl">
-					{activeSection.title}
-				</h1>
-				<p class="mx-auto mt-8 max-w-sm text-xl text-white/50">{activeSection.description}</p>
-			</div>
-		{:else}
-			<!-- Other pages: three-column layout -->
+				<div class="font-display select-none text-sm tracking-[0.3em] text-white/90">SAILORLUA</div>
+
+				<div class="absolute right-0 hidden items-center gap-6 lg:flex">
+					{#each sections as s (s.id)}
+						<a
+							href={resolve(s.path)}
+							class="transition-colors duration-150 hover:text-white/80 {s.path === activeSection.path ? 'text-white/90' : 'text-white/45'}"
+							aria-current={s.path === activeSection.path ? 'page' : undefined}
+						>
+							{s.id === 'home' ? 'HOME' : s.title}
+						</a>
+					{/each}
+				</div>
+			</nav>
+
 			<div
 				class="col-span-12 mt-6 flex min-w-0 flex-col gap-10 sm:col-span-3 sm:col-start-2 sm:mt-0 sm:justify-center"
 				in:fade={{ duration: 200, delay: 100 }}
@@ -237,8 +311,8 @@
 					{/key}
 				</div>
 			</div>
-		{/if}
-	</div>
+		</div>
+	{/if}
 
 	<div class="sr-only">{@render children()}</div>
 </section>

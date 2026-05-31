@@ -6,7 +6,7 @@
 	src: url('/fonts/Moredya-Regular.ttf') format('truetype');
 	font-weight: 400;
 	font-style: normal;
-	font-display: swap;
+	font-display: block;
 }
 
 @layer base {
@@ -152,10 +152,10 @@
 		position: absolute;
 		bottom: 0;
 		left: 50%;
-		width: min(90vw, 900px);
+		width: min(75vw, 600px);
 		/* translateY(25%) moves the center R/2 below the viewport bottom,
 		   exposing ~25% of the moon height as a clean arc above the bottom edge */
-		transform: translateX(-50%) translateY(55%);
+		transform: translateX(-50%) translateY(50%);
 		pointer-events: none;
 		z-index: 1;
 	}
@@ -288,6 +288,166 @@
 
 	.moon-mobile__label {
 		white-space: nowrap;
+	}
+
+	/* --- Home two-panel scroll --- */
+
+	.home-scroll {
+		height: 100vh;
+		overflow-y: scroll;
+		scroll-snap-type: y mandatory;
+		scroll-behavior: smooth;
+		scrollbar-width: none;
+	}
+	.home-scroll::-webkit-scrollbar { display: none; }
+
+	.non-home {
+		position: relative;
+		min-height: 100vh;
+		overflow: hidden;
+	}
+
+	.home-panel {
+		position: relative;
+		height: 100vh;
+		overflow: hidden;
+		scroll-snap-align: start;
+	}
+
+	/* Moon peeking from the top of panel 2 — mirror of .hero-moon-bottom */
+	.hero-moon-top {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		width: min(75vw, 600px);
+		transform: translateX(-50%) translateY(-50%);
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	/* Bouncing down-arrow button, sits within the visible moon arc */
+	.scroll-down-arrow {
+		position: absolute;
+		top: 34%;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 10;
+		border: none;
+		background: transparent;
+		color: rgb(0 0 0 / 0.75);
+		cursor: pointer;
+		padding: 8px;
+		line-height: 0;
+		pointer-events: auto;
+		/* white halo so the black icon reads on any part of the moon surface */
+		filter: drop-shadow(0 0 4px rgb(255 255 255 / 0.8));
+		animation: arrow-bounce 2s ease-in-out infinite;
+		transition: color 160ms ease, filter 160ms ease;
+		-webkit-tap-highlight-color: transparent;
+	}
+	.scroll-down-arrow:hover {
+		color: rgb(0 0 0 / 1);
+		filter: drop-shadow(0 0 6px rgb(255 255 255 / 1));
+	}
+	.scroll-down-arrow svg { display: block; width: 52px; height: 52px; }
+
+	/* Up arrow on the moon in panel 2 — mirrors scroll-down-arrow */
+	.scroll-up-arrow {
+		position: absolute;
+		bottom: 34%;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 10;
+		border: none;
+		background: transparent;
+		color: rgb(0 0 0 / 0.75);
+		cursor: pointer;
+		padding: 8px;
+		line-height: 0;
+		pointer-events: auto;
+		filter: drop-shadow(0 0 4px rgb(255 255 255 / 0.8));
+		animation: arrow-bounce-up 2s ease-in-out infinite;
+		transition: color 160ms ease, filter 160ms ease;
+		-webkit-tap-highlight-color: transparent;
+	}
+	.scroll-up-arrow:hover {
+		color: rgb(0 0 0 / 1);
+		filter: drop-shadow(0 0 6px rgb(255 255 255 / 1));
+	}
+	.scroll-up-arrow svg { display: block; width: 52px; height: 52px; }
+
+	@keyframes arrow-bounce-up {
+		0%, 100% { transform: translateX(-50%) translateY(0); }
+		50%       { transform: translateX(-50%) translateY(-7px); }
+	}
+
+	@keyframes arrow-bounce {
+		0%, 100% { transform: translateX(-50%) translateY(0); }
+		50%       { transform: translateX(-50%) translateY(7px); }
+	}
+
+	/* Panel 2: three nav cards */
+	.nav-cards {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: stretch;
+		justify-content: center;
+		gap: 2rem;
+		/* top padding clears moon arc, bottom padding balances it toward vertical center */
+		padding: min(30vw, 300px) 3rem min(50vw, 500px);
+		flex-wrap: wrap;
+	}
+
+	.nav-card {
+		flex: 1 1 160px;
+		max-width: 240px;
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+		padding: 1.75rem 1.5rem;
+		border-radius: 1.25rem;
+		border: 1px solid rgb(255 255 255 / 0.1);
+		background: rgb(255 255 255 / 0.04);
+		backdrop-filter: blur(8px);
+		color: white;
+		text-decoration: none;
+		transition:
+			background 200ms ease,
+			border-color 200ms ease,
+			transform 200ms ease;
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	/* SMALL SITE */
+	@media (max-width: 800px) {
+		.nav-cards {
+			flex-direction: column;
+			align-items: center;
+			flex-wrap: nowrap;
+			padding-bottom: 2rem;
+			overflow-y: auto;
+			padding: min(150.0vw, 480px) 3rem min(20vw, 250px);
+		}
+		.nav-card { width: 100%; max-width: 320px; }
+
+		.hero-moon-bottom { width: min(170vw, 600px); }
+		.hero-moon-top { width: min(170vw, 600px); }
+	}
+
+	.nav-card:hover {
+		background: rgb(255 255 255 / 0.08);
+		border-color: rgb(255 255 255 / 0.2);
+		transform: translateY(-3px);
+	}
+	.nav-card__title {
+		font-size: 1.4rem;
+		letter-spacing: 0.15em;
+	}
+	.nav-card__desc {
+		font-size: 0.72rem;
+		color: rgb(255 255 255 / 0.45);
+		line-height: 1.55;
 	}
 
 }
