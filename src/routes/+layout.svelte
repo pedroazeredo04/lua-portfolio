@@ -51,7 +51,9 @@
 	const activeIndex = $derived(
 		Math.max(
 			0,
-			sections.findIndex((s) => s.path === activePath)
+			sections.findIndex((s) =>
+				s.path === '/' ? activePath === '/' : activePath.startsWith(s.path)
+			)
 		)
 	);
 	const activeSection = $derived(sections[activeIndex]);
