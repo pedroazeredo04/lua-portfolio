@@ -25,6 +25,14 @@
 				</a>
 			{/each}
 			<a
+				href="/admin/about"
+				class="rounded-lg px-3 py-1 transition-colors {currentPath === '/admin/about'
+					? 'bg-white/20 text-white'
+					: 'text-white/50 hover:text-white'}"
+			>
+				About
+			</a>
+			<a
 				href="/admin/categories"
 				class="rounded-lg px-3 py-1 transition-colors {currentPath.startsWith('/admin/categories')
 					? 'bg-white/20 text-white'
