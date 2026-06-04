@@ -1,9 +1,12 @@
-import { categories } from '$lib/projects';
+import { getCategories } from '$lib/server/categories';
+import { getPosts } from '$lib/server/posts';
 import { error } from '@sveltejs/kit';
 
 export async function load({ params }) {
+	const categories = await getCategories();
 	const category = categories.find((c) => c.slug === params.slug);
 	if (!category) error(404, 'Category not found');
-	// TODO: also fetch posts for this category from backend
-	return { category };
+
+	const posts = await getPosts(params.slug);
+	return { category, posts };
 }

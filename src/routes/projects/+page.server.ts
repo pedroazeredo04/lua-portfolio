@@ -1,6 +1,5 @@
-import { categories } from '$lib/projects';
+import { getCategories } from '$lib/server/categories';
 
 export async function load() {
-	// TODO: replace with fetch('/api/categories') when backend is ready
-	return { categories };
+	return { categories: await getCategories() };
 }

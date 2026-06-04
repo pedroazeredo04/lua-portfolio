@@ -49,14 +49,11 @@
 
 	const activePath = $derived(normalizePath(page.url.pathname));
 	const activeIndex = $derived(
-		Math.max(
-			0,
-			sections.findIndex((s) =>
-				s.path === '/' ? activePath === '/' : activePath.startsWith(s.path)
-			)
+		sections.findIndex((s) =>
+			s.path === '/' ? activePath === '/' : activePath.startsWith(s.path)
 		)
 	);
-	const activeSection = $derived(sections[activeIndex]);
+	const activeSection = $derived(activeIndex >= 0 ? sections[activeIndex] : null);
 	const isProjectCategory = $derived(
 		activePath !== '/projects' && activePath.startsWith('/projects')
 	);
@@ -81,7 +78,7 @@
 	let sectionEl: HTMLElement | null = $state(null);
 
 	onNavigate(() => {
-		if (sectionEl && activeSection.id === 'home') {
+		if (sectionEl && activeSection?.id === 'home') {
 			sectionEl.style.scrollBehavior = 'auto';
 			sectionEl.scrollTop = 0;
 			sectionEl.style.scrollBehavior = '';
@@ -89,7 +86,7 @@
 	});
 
 	$effect(() => {
-		if (activeSection.id === 'home') {
+		if (activeSection?.id === 'home') {
 			const container = document.querySelector<HTMLElement>('.home-scroll');
 			if (container) {
 				container.style.scrollBehavior = 'auto';
@@ -106,10 +103,10 @@
 
 <section
 	class="bg-space text-white"
-	class:home-scroll={activeSection.id === 'home'}
+	class:home-scroll={activeSection?.id === 'home'}
 	bind:this={sectionEl}
 >
-	{#if activeSection.id === 'home'}
+	{#if activeSection !== null && activeSection.id === 'home'}
 		<!-- Panel 1: hero -->
 		<div class="home-panel">
 			<div class="hero-moon-bottom">
@@ -137,8 +134,8 @@
 						{#each sections as s (s.id)}
 							<a
 								href={resolve(s.path)}
-								class="transition-colors duration-150 hover:text-white/80 {s.path === activeSection.path ? 'text-white/90' : 'text-white/45'}"
-								aria-current={s.path === activeSection.path ? 'page' : undefined}
+								class="transition-colors duration-150 hover:text-white/80 {s.path === activeSection?.path ? 'text-white/90' : 'text-white/45'}"
+								aria-current={s.path === activeSection?.path ? 'page' : undefined}
 							>
 								{s.id === 'home' ? 'HOME' : s.title}
 							</a>
@@ -204,8 +201,8 @@
 					{#each sections as s (s.id)}
 						<a
 							href={resolve(s.path)}
-							class="transition-colors duration-150 hover:text-white/80 {s.path === activeSection.path ? 'text-white/90' : 'text-white/45'}"
-							aria-current={s.path === activeSection.path ? 'page' : undefined}
+							class="transition-colors duration-150 hover:text-white/80 {s.path === activeSection?.path ? 'text-white/90' : 'text-white/45'}"
+							aria-current={s.path === activeSection?.path ? 'page' : undefined}
 						>
 							{s.id === 'home' ? 'HOME' : s.title}
 						</a>
@@ -241,8 +238,8 @@
 			{#each sections as s (s.id)}
 				<a
 					href={resolve(s.path)}
-					class="mobile-menu-link {s.path === activeSection.path ? 'active' : ''}"
-					aria-current={s.path === activeSection.path ? 'page' : undefined}
+					class="mobile-menu-link {s.path === activeSection?.path ? 'active' : ''}"
+					aria-current={s.path === activeSection?.path ? 'page' : undefined}
 				>
 					{s.id.charAt(0).toUpperCase() + s.id.slice(1)}
 				</a>
