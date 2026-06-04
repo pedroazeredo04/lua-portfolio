@@ -186,6 +186,7 @@
 				{/each}
 			</div>
 		</div>
+	{@render children()}
 
 	{:else}
 		<div>
