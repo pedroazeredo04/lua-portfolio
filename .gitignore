@@ -10,3 +10,4 @@ data/about.json
 data/posts/*.json
 !data/posts/.gitkeep
 static/uploads/
+CONTEXT.md
