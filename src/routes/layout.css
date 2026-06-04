@@ -362,6 +362,19 @@
 
 	/* --- Projects page --- */
 
+	.projects-back {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		font-size: 0.7rem;
+		letter-spacing: 0.25em;
+		color: rgb(255 255 255 / 0.4);
+		text-decoration: none;
+		transition: color 150ms ease;
+	}
+	.projects-back:hover { color: rgb(255 255 255 / 0.75); }
+	.projects-back svg { width: 14px; height: 14px; }
+
 	.projects-layout {
 		display: flex;
 		flex-direction: column;

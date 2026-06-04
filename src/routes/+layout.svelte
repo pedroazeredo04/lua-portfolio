@@ -57,6 +57,9 @@
 		)
 	);
 	const activeSection = $derived(sections[activeIndex]);
+	const isProjectCategory = $derived(
+		activePath !== '/projects' && activePath.startsWith('/projects')
+	);
 
 	function preventFocusOnPointerDown(event: PointerEvent) {
 		event.preventDefault();
@@ -187,6 +190,14 @@
 	{:else}
 		<div>
 			<nav class="relative flex h-20 items-center justify-center px-6 text-xs tracking-[0.35em] text-white/70 sm:h-24 sm:px-10">
+				{#if isProjectCategory}
+					<a href={resolve('/projects')} class="projects-back absolute left-10 sm:left-16">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<polyline points="15 18 9 12 15 6"></polyline>
+						</svg>
+						PROJECTS
+					</a>
+				{/if}
 				<div class="font-display select-none text-sm tracking-[0.3em] text-white/90">SAILORLUA</div>
 				<div class="absolute right-6 hidden items-center gap-6 lg:flex sm:right-10">
 					{#each sections as s (s.id)}

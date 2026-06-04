@@ -10,7 +10,7 @@
 
 <div class="projects-layout">
 	<div class="projects-title">
-		<h1 class="font-display text-5xl font-normal tracking-wide text-white sm:text-6xl">
+		<h1 class="font-display text-4xl font-normal tracking-wide text-white sm:text-5xl">
 			{data.category.name.toUpperCase()}
 		</h1>
 		<p class="projects-title__desc">{data.category.description}</p>
