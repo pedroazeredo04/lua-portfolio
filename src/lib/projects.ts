@@ -22,15 +22,15 @@ export const categories: Category[] = [
 		slug: 'crochet',
 		name: 'Crochet',
 		description: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-		previewImage: '/crochet-preview.jpg',
+		previewImage: '/crochet-preview.jpeg',
 		order: 2
 	},
 	{
 		id: '3',
-		slug: 'aesthetics',
-		name: 'Aesthetics',
+		slug: 'pictures',
+		name: 'Pictures',
 		description: 'Ut enim ad minim veniam, quis nostrud exercitation.',
-		previewImage: '/aesthetics-preview.jpg',
+		previewImage: '/pictures-preview.jpeg',
 		order: 3
 	}
 ];
