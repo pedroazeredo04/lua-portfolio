@@ -132,7 +132,7 @@
 
 			<div class="relative z-10 grid h-screen grid-rows-[auto_1fr] grid-cols-12 gap-4 px-6 sm:px-10 pointer-events-none">
 				<nav class="relative col-span-12 flex h-20 items-center justify-center text-xs tracking-[0.35em] text-white/70 sm:h-24 pointer-events-auto">
-					<div class="font-display select-none text-sm tracking-[0.3em] text-white/90">SAILORLUA</div>
+					<div class="font-script select-none text-sm tracking-[0.3em] text-white/90">sailorlua</div>
 					<div class="absolute right-0 hidden items-center gap-6 lg:flex">
 						{#each sections as s (s.id)}
 							<a
@@ -198,7 +198,7 @@
 						PROJECTS
 					</a>
 				{/if}
-				<div class="font-display select-none text-sm tracking-[0.3em] text-white/90">SAILORLUA</div>
+				<div class="font-script select-none text-sm tracking-[0.3em] text-white/90">sailorlua</div>
 				<div class="absolute right-6 hidden items-center gap-6 lg:flex sm:right-10">
 					{#each sections as s (s.id)}
 						<a

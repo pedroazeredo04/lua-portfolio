@@ -9,6 +9,14 @@
 	font-display: block;
 }
 
+@font-face {
+	font-family: 'PetitFormalScript';
+	src: url('/fonts/PetitFormalScript-Regular.ttf') format('truetype');
+	font-weight: 400;
+	font-style: normal;
+	font-display: block;
+}
+
 @layer base {
 	html,
 	body {
@@ -54,6 +62,10 @@
 			Roboto,
 			Arial,
 			sans-serif;
+	}
+
+	.font-script {
+		font-family: 'PetitFormalScript', cursive, sans-serif;
 	}
 
 	/* Used on the top-level section in +layout.svelte */
@@ -349,7 +361,7 @@
 	}
 
 	.mobile-menu-link {
-		font-family: 'Moredya', system-ui, sans-serif;
+		font-family: 'PetitFormalScript', system-ui, sans-serif;
 		font-size: 2.25rem;
 		font-weight: 550;
 		letter-spacing: 0.05em;

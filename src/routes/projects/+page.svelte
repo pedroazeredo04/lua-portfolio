@@ -55,7 +55,7 @@
 <div class="projects-layout">
 	<div class="projects-title">
 		<h1 class="font-display text-4xl font-normal tracking-wide text-white sm:text-5xl">
-			MY PROJECTS
+			PROJECTS
 		</h1>
 		<p class="projects-title__desc">
 			Please feel free to check out some of the stuff I have done :)
@@ -72,7 +72,7 @@
 					aria-label={cat.name}
 				>
 					<div class="category-card__overlay">
-						<span class="category-card__name font-display">{cat.name}</span>
+						<span class="category-card__name font-script">{cat.name}</span>
 					</div>
 				</a>
 			{/each}
