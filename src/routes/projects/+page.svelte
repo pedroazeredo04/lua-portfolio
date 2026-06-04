@@ -15,8 +15,7 @@
 			MY PROJECTS
 		</h1>
 		<p class="projects-title__desc">
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
-			labore et dolore.
+			Please feel free to check out some of the stuff I have done :)
 		</p>
 	</div>
 

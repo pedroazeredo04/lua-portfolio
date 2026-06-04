@@ -6,6 +6,7 @@
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import { fade } from 'svelte/transition';
+	import { onNavigate } from '$app/navigation';
 
 	type Section = {
 		id: 'home' | 'about' | 'projects' | 'contact';
@@ -75,6 +76,27 @@
 	let menuOpen = $state(false);
 	$effect(() => { activePath; menuOpen = false; });
 
+	let sectionEl: HTMLElement | null = $state(null);
+
+	onNavigate(() => {
+		if (sectionEl && activeSection.id === 'home') {
+			sectionEl.style.scrollBehavior = 'auto';
+			sectionEl.scrollTop = 0;
+			sectionEl.style.scrollBehavior = '';
+		}
+	});
+
+	$effect(() => {
+		if (activeSection.id === 'home') {
+			const container = document.querySelector<HTMLElement>('.home-scroll');
+			if (container) {
+				container.style.scrollBehavior = 'auto';
+				container.scrollTop = 0;
+				container.style.scrollBehavior = '';
+			}
+		}
+	});
+
 	let { children } = $props();
 </script>
 
@@ -83,6 +105,7 @@
 <section
 	class="bg-space text-white"
 	class:home-scroll={activeSection.id === 'home'}
+	bind:this={sectionEl}
 >
 	{#if activeSection.id === 'home'}
 		<!-- Panel 1: hero -->
