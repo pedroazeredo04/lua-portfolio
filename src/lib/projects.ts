@@ -14,7 +14,7 @@ export const categories: Category[] = [
 		slug: 'draw',
 		name: 'Draw',
 		description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-		previewImage: '/draw-preview.jpg',
+		previewImage: '/draw-preview.jpeg',
 		order: 1
 	},
 	{
