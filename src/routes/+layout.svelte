@@ -5,7 +5,6 @@
 
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
-	import { fade } from 'svelte/transition';
 	import { onNavigate } from '$app/navigation';
 
 	type Section = {
@@ -109,7 +108,7 @@
 >
 	{#if activeSection.id === 'home'}
 		<!-- Panel 1: hero -->
-		<div class="home-panel" transition:fade={{ duration: 300 }}>
+		<div class="home-panel">
 			<div class="hero-moon-bottom">
 				<div class="moon-shell">
 					<div class="moon" data-phase="full" aria-label="Full Moon">
@@ -146,8 +145,6 @@
 
 				<div
 					class="col-span-12 flex flex-col items-center justify-start pt-[6vh] sm:pt-[12vh] text-center"
-					in:fade={{ duration: 220, delay: 180 }}
-					out:fade={{ duration: 150 }}
 				>
 					<h1 class="section-title font-display text-6xl font-normal tracking-wide sm:text-8xl">
 						{activeSection.title}
@@ -188,7 +185,7 @@
 		</div>
 
 	{:else}
-		<div transition:fade={{ duration: 300 }}>
+		<div>
 			<nav class="relative flex h-20 items-center justify-center px-6 text-xs tracking-[0.35em] text-white/70 sm:h-24 sm:px-10">
 				<div class="font-display select-none text-sm tracking-[0.3em] text-white/90">SAILORLUA</div>
 				<div class="absolute right-6 hidden items-center gap-6 lg:flex sm:right-10">
@@ -228,7 +225,7 @@
 	</button>
 
 	{#if menuOpen}
-		<div class="mobile-menu" transition:fade={{ duration: 200 }}>
+		<div class="mobile-menu">
 			{#each sections as s (s.id)}
 				<a
 					href={resolve(s.path)}
