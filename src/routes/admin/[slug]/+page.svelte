@@ -3,6 +3,8 @@
 	import type { PageData, ActionData } from './$types';
 
 	let { data, form }: { data: PageData; form: ActionData } = $props();
+
+	let editingId = $state<string | null>(null);
 </script>
 
 <svelte:head><title>Admin – {data.category.name}</title></svelte:head>
@@ -59,12 +61,39 @@
 		{#each data.posts as post (post.id)}
 			<div class="relative overflow-hidden rounded-xl border border-white/10 bg-black/20">
 				<img src={post.image} alt={post.caption} class="h-40 w-full object-cover" />
-				<div class="p-2">
-					<p class="line-clamp-2 text-xs text-white/60">{post.caption || '(no caption)'}</p>
-					<p class="mt-1 text-[10px] text-white/30">
-						{new Date(post.createdAt).toLocaleDateString()}
-					</p>
-				</div>
+				{#if editingId === post.id}
+					<form method="POST" action="?/editCaption" use:enhance={() => async ({ update }) => { await update(); editingId = null; }} class="p-2">
+						<input type="hidden" name="id" value={post.id} />
+						<textarea
+							name="caption"
+							rows="2"
+							class="w-full rounded border border-white/10 bg-white/5 px-2 py-1 text-xs text-white focus:outline-none focus:ring-1 focus:ring-white/20"
+						>{post.caption}</textarea>
+						<div class="mt-1 flex gap-1">
+							<button
+								type="submit"
+								class="rounded bg-white/10 px-2 py-0.5 text-xs text-white transition-colors hover:bg-white/20"
+							>Save</button>
+							<button
+								type="button"
+								onclick={() => (editingId = null)}
+								class="rounded bg-white/5 px-2 py-0.5 text-xs text-white/50 transition-colors hover:bg-white/10"
+							>Cancel</button>
+						</div>
+					</form>
+				{:else}
+					<div class="p-2">
+						<p class="line-clamp-2 text-xs text-white/60">{post.caption || '(no caption)'}</p>
+						<p class="mt-1 text-[10px] text-white/30">
+							{new Date(post.createdAt).toLocaleDateString()}
+						</p>
+					</div>
+					<button
+						onclick={() => (editingId = post.id)}
+						class="absolute left-2 top-2 rounded bg-white/10 px-2 py-0.5 text-xs text-white/60 transition-colors hover:bg-white/20"
+						aria-label="Edit caption"
+					>✎</button>
+				{/if}
 				<form
 					method="POST"
 					action="?/delete"

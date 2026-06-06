@@ -51,5 +51,20 @@ export const actions: Actions = {
 		const posts = await getPosts(params.slug);
 		await savePosts(params.slug, posts.filter((p) => p.id !== postId));
 		redirect(303, `/admin/${params.slug}`);
+	},
+
+	editCaption: async ({ request, params }) => {
+		const formData = await request.formData();
+		const postId = formData.get('id')?.toString();
+		const caption = formData.get('caption')?.toString().trim() ?? '';
+		if (!postId) return fail(400, { error: 'Missing post ID.' });
+
+		const posts = await getPosts(params.slug);
+		const post = posts.find((p) => p.id === postId);
+		if (!post) return fail(404, { error: 'Post not found.' });
+
+		post.caption = caption;
+		await savePosts(params.slug, posts);
+		redirect(303, `/admin/${params.slug}`);
 	}
 };
