@@ -505,6 +505,13 @@
 		object-fit: contain;
 		border-radius: 0.5rem;
 		box-shadow: 0 8px 40px rgb(0 0 0 / 0.6);
+		cursor: zoom-in;
+	}
+
+	.lightbox__content--zoomed {
+		max-width: 90vw;
+		max-height: 85vh;
+		overflow: auto;
 	}
 
 	.lightbox__caption {
