@@ -16,9 +16,13 @@
 	const CLICK_ZOOM = 2;
 	const ZOOM_MAX = 5;
 	const WHEEL_FACTOR = 0.004;
+	const DRAG_THRESHOLD = 5;
+
+	let isDragging = $state(false);
+	let dragState: { startX: number; startY: number; startScrollLeft: number; startScrollTop: number; hasMoved: boolean } | null = null;
 
 	function open(post: Post) { lightbox = post; lightboxOpen.set(true); zoom = 1; baseWidth = null; baseHeight = null; }
-	function close() { lightbox = null; lightboxOpen.set(false); zoom = 1; }
+	function close() { lightbox = null; lightboxOpen.set(false); zoom = 1; isDragging = false; dragState = null; }
 
 	function onImgLoad() {
 		if (!imgEl) return;
@@ -57,6 +61,40 @@
 		window.addEventListener('keydown', onKey);
 		return () => window.removeEventListener('keydown', onKey);
 	});
+
+	function onImgPointerDown(e: PointerEvent) {
+		(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+		dragState = {
+			startX: e.clientX, startY: e.clientY,
+			startScrollLeft: contentEl?.scrollLeft ?? 0,
+			startScrollTop:  contentEl?.scrollTop  ?? 0,
+			hasMoved: false,
+		};
+	}
+
+	function onImgPointerMove(e: PointerEvent) {
+		if (!dragState || zoom <= 1 || !contentEl) return;
+		const dx = e.clientX - dragState.startX;
+		const dy = e.clientY - dragState.startY;
+		if (!dragState.hasMoved && (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD)) {
+			dragState.hasMoved = true;
+			isDragging = true;
+		}
+		if (dragState.hasMoved) {
+			contentEl.scrollLeft = dragState.startScrollLeft - dx;
+			contentEl.scrollTop  = dragState.startScrollTop  - dy;
+		}
+	}
+
+	function onImgPointerUp(e: PointerEvent) {
+		if (!dragState) return;
+		const wasDrag = dragState.hasMoved;
+		dragState = null;
+		isDragging = false;
+		if (!wasDrag) {
+			zoomToPoint(zoom === 1 ? CLICK_ZOOM : 1, e.clientX, e.clientY);
+		}
+	}
 
 	$effect(() => {
 		if (!imgEl) return;
@@ -105,15 +143,18 @@
 		<button class="lightbox__close" onclick={(e) => { e.stopPropagation(); close(); }} aria-label="Close">
 			✕
 		</button>
-		<div class="lightbox__content" class:lightbox__content--zoomed={zoom > 1} bind:this={contentEl} onclick={(e) => e.stopPropagation()} role="presentation">
+		<div class="lightbox__content" class:lightbox__content--zoomed={zoom > 1} bind:this={contentEl} onclick={(e) => e.stopPropagation()} style:cursor={zoom > 1 ? (isDragging ? 'grabbing' : 'grab') : null} role="presentation">
 			<img
 				class="lightbox__img"
 				bind:this={imgEl}
 				src={lightbox.image}
 				alt={lightbox.caption}
+				draggable={false}
 				onload={onImgLoad}
-				onclick={(e) => zoomToPoint(zoom === 1 ? CLICK_ZOOM : 1, e.clientX, e.clientY)}
-				style:cursor={zoom > 1 ? 'zoom-out' : 'zoom-in'}
+				onpointerdown={onImgPointerDown}
+				onpointermove={onImgPointerMove}
+				onpointerup={onImgPointerUp}
+				style:cursor={zoom > 1 ? (isDragging ? 'grabbing' : 'grab') : 'zoom-in'}
 				style:width={zoom > 1 && baseWidth != null ? `${baseWidth * zoom}px` : null}
 				style:max-width={zoom > 1 && baseWidth != null ? 'none' : null}
 				style:max-height={zoom > 1 && baseWidth != null ? 'none' : null}

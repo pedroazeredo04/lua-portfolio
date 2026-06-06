@@ -506,6 +506,7 @@
 		border-radius: 0.5rem;
 		box-shadow: 0 8px 40px rgb(0 0 0 / 0.6);
 		cursor: zoom-in;
+		-webkit-user-drag: none;
 	}
 
 	.lightbox__content--zoomed {
