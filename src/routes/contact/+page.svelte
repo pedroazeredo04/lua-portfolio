@@ -13,7 +13,7 @@
 
 	<div class="contact-links">
 		<a
-			href="https://instagram.com/sailorlua"
+			href="https://instagram.com/luaecatarina"
 			class="contact-card"
 			target="_blank"
 			rel="noopener noreferrer"
@@ -27,13 +27,13 @@
 			</div>
 			<div class="contact-card-info">
 				<span class="contact-card-label">Instagram</span>
-				<span class="contact-card-value">@sailorlua</span>
+				<span class="contact-card-value">@luaecatarina</span>
 			</div>
 			<span class="contact-card-arrow">›</span>
 		</a>
 
 		<a
-			href="mailto:lua@sailorlua.art"
+			href="mailto:luane.catarina.berti@gmail.com"
 			class="contact-card"
 		>
 			<div class="contact-card-icon">
@@ -44,7 +44,7 @@
 			</div>
 			<div class="contact-card-info">
 				<span class="contact-card-label">Email</span>
-				<span class="contact-card-value">lua@sailorlua.art</span>
+				<span class="contact-card-value">luane.catarina.berti@gmail.com</span>
 			</div>
 			<span class="contact-card-arrow">›</span>
 		</a>
