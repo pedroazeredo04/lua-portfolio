@@ -190,7 +190,7 @@
 		<div>
 			<nav class="relative flex h-20 items-center justify-center px-6 text-xs tracking-[0.35em] text-white/70 sm:h-24 sm:px-10">
 				{#if isProjectCategory}
-					<a href={resolve('/projects')} class="projects-back absolute left-10 sm:left-16">
+					<a href={resolve('/projects')} class="projects-back absolute left-4 sm:left-16">
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 							<polyline points="15 18 9 12 15 6"></polyline>
 						</svg>
