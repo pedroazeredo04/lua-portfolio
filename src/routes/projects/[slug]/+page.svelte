@@ -1,13 +1,17 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import type { PageData } from './$types';
 	import type { Post } from '$lib/server/posts';
+	import { lightboxOpen } from '$lib/stores/lightbox';
 
 	let { data }: { data: PageData } = $props();
 
 	let lightbox: Post | null = $state(null);
 
-	function open(post: Post) { lightbox = post; }
-	function close() { lightbox = null; }
+	function open(post: Post) { lightbox = post; lightboxOpen.set(true); }
+	function close() { lightbox = null; lightboxOpen.set(false); }
+
+	onDestroy(() => lightboxOpen.set(false));
 
 	$effect(() => {
 		if (!lightbox) return;

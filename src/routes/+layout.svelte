@@ -6,6 +6,7 @@
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import { onNavigate } from '$app/navigation';
+	import { lightboxOpen } from '$lib/stores/lightbox';
 
 	type Section = {
 		id: 'home' | 'about' | 'projects' | 'contact';
@@ -214,36 +215,38 @@
 	{/if}
 
 	<!-- Single fixed button: shows ≡ or ✕ at the exact same screen position -->
-	<button
-		class="burger-btn lg:hidden"
-		onclick={() => (menuOpen = !menuOpen)}
-		aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-	>
-		{#if menuOpen}
-			<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round">
-				<line x1="18" y1="6" x2="6" y2="18" />
-				<line x1="6"  y1="6" x2="18" y2="18" />
-			</svg>
-		{:else}
-			<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round">
-				<line x1="3" y1="6"  x2="21" y2="6" />
-				<line x1="3" y1="12" x2="21" y2="12" />
-				<line x1="3" y1="18" x2="21" y2="18" />
-			</svg>
-		{/if}
-	</button>
+	{#if !$lightboxOpen}
+		<button
+			class="burger-btn lg:hidden"
+			onclick={() => (menuOpen = !menuOpen)}
+			aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+		>
+			{#if menuOpen}
+				<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round">
+					<line x1="18" y1="6" x2="6" y2="18" />
+					<line x1="6"  y1="6" x2="18" y2="18" />
+				</svg>
+			{:else}
+				<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round">
+					<line x1="3" y1="6"  x2="21" y2="6" />
+					<line x1="3" y1="12" x2="21" y2="12" />
+					<line x1="3" y1="18" x2="21" y2="18" />
+				</svg>
+			{/if}
+		</button>
 
-	{#if menuOpen}
-		<div class="mobile-menu">
-			{#each sections as s (s.id)}
-				<a
-					href={resolve(s.path)}
-					class="mobile-menu-link {s.path === activeSection?.path ? 'active' : ''}"
-					aria-current={s.path === activeSection?.path ? 'page' : undefined}
-				>
-					{s.id.charAt(0).toUpperCase() + s.id.slice(1)}
-				</a>
-			{/each}
-		</div>
+		{#if menuOpen}
+			<div class="mobile-menu">
+				{#each sections as s (s.id)}
+					<a
+						href={resolve(s.path)}
+						class="mobile-menu-link {s.path === activeSection?.path ? 'active' : ''}"
+						aria-current={s.path === activeSection?.path ? 'page' : undefined}
+					>
+						{s.id.charAt(0).toUpperCase() + s.id.slice(1)}
+					</a>
+				{/each}
+			</div>
+		{/if}
 	{/if}
 </section>
