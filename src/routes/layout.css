@@ -35,15 +35,7 @@
 			Arial,
 			sans-serif;
 
-		/* Warm starfield: ivory stars, deep violet/amethyst nebula */
 		background-color: #08060e;
-		background-image:
-			radial-gradient(1px 1px at 12% 18%, rgb(255 250 235 / 0.30) 50%, transparent 55%),
-			radial-gradient(1px 1px at 72% 26%, rgb(255 250 235 / 0.22) 50%, transparent 55%),
-			radial-gradient(1px 1px at 42% 62%, rgb(255 250 235 / 0.26) 50%, transparent 55%),
-			radial-gradient(1px 1px at 88% 74%, rgb(255 250 235 / 0.18) 50%, transparent 55%),
-			radial-gradient(1px 1px at 22% 82%, rgb(255 250 235 / 0.15) 50%, transparent 55%);
-		background-attachment: fixed;
 	}
 
 	a {
