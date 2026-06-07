@@ -7,6 +7,7 @@
 	import { resolve } from '$app/paths';
 	import { onNavigate } from '$app/navigation';
 	import { lightboxOpen } from '$lib/stores/lightbox';
+	import StarField from '$lib/components/StarField.svelte';
 
 	type Section = {
 		id: 'home' | 'about' | 'projects' | 'contact';
@@ -107,6 +108,7 @@
 	class:home-scroll={activeSection?.id === 'home'}
 	bind:this={sectionEl}
 >
+	<StarField />
 	{#if activeSection !== null && activeSection.id === 'home'}
 		<!-- Panel 1: hero -->
 		<div class="home-panel">
@@ -129,7 +131,7 @@
 			</div>
 
 			<div class="relative z-10 grid h-screen grid-rows-[auto_1fr] grid-cols-12 gap-4 px-6 sm:px-10 pointer-events-none">
-				<nav class="relative col-span-12 flex h-20 items-center justify-center text-xs tracking-[0.35em] text-white/70 sm:h-24 pointer-events-auto">
+				<nav class="nav-bar-bg relative col-span-12 flex h-20 items-center justify-center text-xs tracking-[0.35em] text-white/70 sm:h-24 pointer-events-auto">
 					<div class="font-script select-none text-sm tracking-[0.3em] text-white/90">sailorlua</div>
 					<div class="absolute right-0 hidden items-center gap-6 lg:flex">
 						{#each sections as s (s.id)}
@@ -188,7 +190,7 @@
 
 	{:else}
 		<div>
-			<nav class="relative flex h-20 items-center justify-center px-6 text-xs tracking-[0.35em] text-white/70 sm:h-24 sm:px-10">
+			<nav class="nav-bar-bg relative flex h-20 items-center justify-center px-6 text-xs tracking-[0.35em] text-white/70 sm:h-24 sm:px-10">
 				{#if isProjectCategory}
 					<a href={resolve('/projects')} class="projects-back absolute left-4 sm:left-16">
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
