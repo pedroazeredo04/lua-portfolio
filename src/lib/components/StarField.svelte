@@ -12,7 +12,7 @@
 		})();
 
 		type Star = {
-			x: number; y: number; r: number; color: string;
+			rx: number; ry: number; r: number; color: string;
 			baseOpacity: number; amplitude: number; phase: number; speed: number;
 		};
 
@@ -32,25 +32,24 @@
 			W = canvas.width  = window.innerWidth;
 			H = canvas.height = window.innerHeight;
 
-			// Milky Way band: diagonal axis
-			const bx = W * 0.5, by = H * 0.5;
+			// Milky Way band: diagonal axis, all coords in 0-1 relative space
 			const angle = Math.PI * 0.2;
 			const ca = Math.cos(angle), sa = Math.sin(angle);
 
-			function bandPoint(spread: number): [number, number] {
-				const along = (rng() - 0.5) * Math.sqrt(W * W + H * H) * 1.2;
-				const perp  = gaussian() * spread;
+			function bandPoint(spreadY: number): [number, number] {
+				const along = (rng() - 0.5) * Math.sqrt(2) * 1.2;
+				const perp  = gaussian() * spreadY;
 				return [
-					bx + along * ca - perp * sa,
-					by + along * sa + perp * ca,
+					0.5 + along * ca - perp * sa,
+					0.5 + along * sa + perp * ca,
 				];
 			}
 
 			tinyStars = Array.from({ length: 700 }, () => {
 				const inBand = rng() < 0.55;
-				const [x, y] = inBand ? bandPoint(H * 0.18) : [rng() * W, rng() * H];
+				const [rx, ry] = inBand ? bandPoint(0.18) : [rng(), rng()];
 				return {
-					x, y,
+					rx, ry,
 					r: 0.3 + rng() * 0.55,
 					color: tinyColors[Math.floor(rng() * tinyColors.length)],
 					baseOpacity: 0.35 + rng() * 0.45,
@@ -62,9 +61,9 @@
 
 			medStars = Array.from({ length: 200 }, () => {
 				const inBand = rng() < 0.45;
-				const [x, y] = inBand ? bandPoint(H * 0.22) : [rng() * W, rng() * H];
+				const [rx, ry] = inBand ? bandPoint(0.22) : [rng(), rng()];
 				return {
-					x, y,
+					rx, ry,
 					r: 1.0 + rng() * 1.6,
 					color: tinyColors[Math.floor(rng() * tinyColors.length)],
 					baseOpacity: 0.5 + rng() * 0.4,
@@ -98,7 +97,7 @@
 			ctx.globalAlpha = op;
 			ctx.fillStyle = s.color;
 			ctx.beginPath();
-			ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+			ctx.arc(s.rx * W, s.ry * H, s.r, 0, Math.PI * 2);
 			ctx.fill();
 		}
 
@@ -109,7 +108,7 @@
 			ctx.shadowColor  = s.color;
 			ctx.fillStyle = s.color;
 			ctx.beginPath();
-			ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+			ctx.arc(s.rx * W, s.ry * H, s.r, 0, Math.PI * 2);
 			ctx.fill();
 			ctx.shadowBlur = 0;
 		}
@@ -136,7 +135,8 @@
 		}
 
 		function onResize() {
-			build();
+			W = canvas.width  = window.innerWidth;
+			H = canvas.height = window.innerHeight;
 		}
 
 		build();
