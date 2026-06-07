@@ -299,7 +299,7 @@
 			flex-wrap: nowrap;
 			padding-bottom: 2rem;
 			overflow-y: auto;
-			padding: min(150.0vw, 480px) 3rem min(20vw, 250px);
+			padding: calc(min(85vw, 300px) + 1.5rem) 3rem min(20vw, 250px);
 		}
 		.nav-card { width: 100%; max-width: 320px; }
 
@@ -691,11 +691,16 @@
 		.about-layout {
 			flex-direction: column;
 			justify-content: flex-start;
-			gap: 5rem;
+			gap: 2rem;
 			padding-top: 3rem;
 			height: auto;
 			min-height: calc(100vh - 6rem);
 			overflow: visible;
+		}
+
+		.about-arch-wrap::before {
+			width: 350px;
+			height: 350px;
 		}
 	}
 
