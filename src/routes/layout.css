@@ -139,7 +139,7 @@
 		position: absolute;
 		bottom: 0;
 		left: 50%;
-		width: min(75vw, 600px);
+		width: min(75vw, 100vh);
 		/* translateY(25%) moves the center R/2 below the viewport bottom,
 		   exposing ~25% of the moon height as a clean arc above the bottom edge */
 		transform: translateX(-50%) translateY(50%);
@@ -191,7 +191,7 @@
 		position: absolute;
 		top: 0;
 		left: 50%;
-		width: min(75vw, 600px);
+		width: min(100vw, 100vh);
 		transform: translateX(-50%) translateY(-50%);
 		pointer-events: none;
 		z-index: 1;
@@ -263,11 +263,10 @@
 		position: absolute;
 		inset: 0;
 		display: flex;
-		align-items: stretch;
+		align-items: center;
 		justify-content: center;
 		gap: 2rem;
-		/* top padding clears moon arc, bottom padding balances it toward vertical center */
-		padding: min(30vw, 300px) 3rem min(50vw, 500px);
+		padding: 2rem 3rem;
 		flex-wrap: wrap;
 	}
 
@@ -303,8 +302,8 @@
 		}
 		.nav-card { width: 100%; max-width: 320px; }
 
-		.hero-moon-bottom { width: min(170vw, 600px); }
-		.hero-moon-top { width: min(170vw, 600px); }
+		.hero-moon-bottom { width: min(170vw, 110vh); }
+		.hero-moon-top { width: min(170vw, 110vh); }
 	}
 
 	.nav-card:hover {
