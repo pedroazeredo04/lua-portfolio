@@ -21,7 +21,7 @@
 			id: 'home',
 			path: '/',
 			title: 'SAILORLUA',
-			description: 'Portfólio de Luane Catarina Berti Santos'
+			description: 'Luane Catarina Portfolio'
 		},
 		{
 			id: 'about',
