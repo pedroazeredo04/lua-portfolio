@@ -1,5 +1,5 @@
 import { getCategories } from '$lib/server/categories';
-import { getPosts, addPost, savePosts, saveImage } from '$lib/server/posts';
+import { getPosts, addPost, savePosts, saveImageOptimized } from '$lib/server/posts';
 import { error, redirect, fail } from '@sveltejs/kit';
 import { randomUUID } from 'crypto';
 import type { Actions, PageServerLoad } from './$types';
@@ -28,17 +28,14 @@ export const actions: Actions = {
 			return fail(400, { error: 'Only JPEG, PNG, WebP, and GIF images are allowed.' });
 		}
 
-		if (imageFile.size > 10 * 1024 * 1024) {
-			return fail(400, { error: 'Image must be under 10 MB.' });
-		}
-
 		const description = formData.get('description')?.toString().trim() ?? '';
-		const imagePath = await saveImage(params.slug, imageFile);
+		const { image, preview } = await saveImageOptimized(params.slug, imageFile);
 		await addPost(params.slug, {
 			id: randomUUID(),
 			caption,
 			description: description || undefined,
-			image: imagePath,
+			image,
+			preview: preview !== image ? preview : undefined,
 			createdAt: new Date().toISOString()
 		});
 

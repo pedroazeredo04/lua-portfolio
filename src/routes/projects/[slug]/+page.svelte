@@ -22,8 +22,22 @@
 	let dragState: { startX: number; startY: number; startScrollLeft: number; startScrollTop: number; hasMoved: boolean } | null = null;
 
 	let descOpen = $state(false);
+	let lightboxSrc = $state('');
 
-	function open(post: Post) { lightbox = post; lightboxOpen.set(true); zoom = 1; baseWidth = null; baseHeight = null; descOpen = false; }
+	function open(post: Post) {
+		lightbox = post;
+		lightboxOpen.set(true);
+		zoom = 1;
+		baseWidth = null;
+		baseHeight = null;
+		descOpen = false;
+		lightboxSrc = post.preview ?? post.image;
+		if (post.preview && post.preview !== post.image) {
+			const full = new Image();
+			full.onload = () => { if (lightbox?.id === post.id) lightboxSrc = post.image; };
+			full.src = post.image;
+		}
+	}
 	function close() { lightbox = null; lightboxOpen.set(false); zoom = 1; isDragging = false; dragState = null; }
 
 	function onImgLoad() {
@@ -113,6 +127,11 @@
 
 <svelte:head>
 	<title>sailorlua – {data.category.name.toLowerCase()}</title>
+	{#each data.posts as post (post.id)}
+		{#if post.preview && post.preview !== post.image}
+			<link rel="prefetch" href={post.image} as="image" />
+		{/if}
+	{/each}
 </svelte:head>
 
 <div class="projects-layout" class:projects-layout--has-posts={data.posts.length > 0}>
@@ -128,7 +147,7 @@
 			{#each data.posts as post (post.id)}
 				<figure class="posts-grid__item">
 					<button class="posts-grid__thumb" onclick={() => open(post)} aria-label="View image full size">
-						<img src={post.image} alt={post.caption} loading="lazy" />
+						<img src={post.preview ?? post.image} alt={post.caption} loading="lazy" />
 					</button>
 					{#if post.caption}
 						<figcaption>{post.caption}</figcaption>
@@ -149,7 +168,7 @@
 			<img
 				class="lightbox__img"
 				bind:this={imgEl}
-				src={lightbox.image}
+				src={lightboxSrc}
 				alt={lightbox.caption}
 				draggable={false}
 				onload={onImgLoad}

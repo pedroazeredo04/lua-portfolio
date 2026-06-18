@@ -1,5 +1,6 @@
 import { readFile, writeFile, mkdir, rename } from 'fs/promises';
 import path from 'path';
+import sharp from 'sharp';
 
 const POSTS_DIR = path.join(process.cwd(), 'data', 'posts');
 const STATIC_DIR = path.join(process.cwd(), 'static');
@@ -9,6 +10,7 @@ export interface Post {
 	caption: string;
 	description?: string;
 	image: string;
+	preview?: string;
 	createdAt: string;
 }
 
@@ -50,4 +52,36 @@ export async function saveImage(subdir: string, file: File): Promise<string> {
 	const bytes = await file.arrayBuffer();
 	await writeFile(path.join(uploadDir, filename), Buffer.from(bytes));
 	return `/uploads/${subdir}/${filename}`;
+}
+
+export async function saveImageOptimized(
+	subdir: string,
+	file: File
+): Promise<{ image: string; preview: string }> {
+	const uploadDir = path.join(STATIC_DIR, 'uploads', subdir);
+	await mkdir(uploadDir, { recursive: true });
+
+	const ext = path.extname(file.name) || '.jpg';
+	const baseName = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+	const filename = `${baseName}${ext}`;
+	const bytes = await file.arrayBuffer();
+	const buf = Buffer.from(bytes);
+
+	await writeFile(path.join(uploadDir, filename), buf);
+	const imagePath = `/uploads/${subdir}/${filename}`;
+
+	if (file.type === 'image/gif') {
+		return { image: imagePath, preview: imagePath };
+	}
+
+	try {
+		const previewFilename = `${baseName}_preview.webp`;
+		await sharp(buf)
+			.resize(1200, 1200, { fit: 'inside', withoutEnlargement: true })
+			.webp({ quality: 75 })
+			.toFile(path.join(uploadDir, previewFilename));
+		return { image: imagePath, preview: `/uploads/${subdir}/${previewFilename}` };
+	} catch {
+		return { image: imagePath, preview: imagePath };
+	}
 }
