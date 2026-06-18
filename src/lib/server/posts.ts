@@ -1,4 +1,4 @@
-import { readFile, writeFile, mkdir } from 'fs/promises';
+import { readFile, writeFile, mkdir, rename } from 'fs/promises';
 import path from 'path';
 
 const POSTS_DIR = path.join(process.cwd(), 'data', 'posts');
@@ -29,6 +29,16 @@ export async function addPost(slug: string, post: Post): Promise<void> {
 	const posts = await getPosts(slug);
 	posts.push(post);
 	await savePosts(slug, posts);
+}
+
+export async function renamePostsFile(oldSlug: string, newSlug: string): Promise<void> {
+	const oldPath = path.join(POSTS_DIR, `${oldSlug}.json`);
+	const newPath = path.join(POSTS_DIR, `${newSlug}.json`);
+	try {
+		await rename(oldPath, newPath);
+	} catch {
+		// no posts file yet — nothing to rename
+	}
 }
 
 export async function saveImage(subdir: string, file: File): Promise<string> {

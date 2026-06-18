@@ -1,5 +1,5 @@
-import { getCategories, updateCategory } from '$lib/server/categories';
-import { saveImage } from '$lib/server/posts';
+import { getCategories, updateCategory, slugify } from '$lib/server/categories';
+import { saveImage, renamePostsFile } from '$lib/server/posts';
 import { error, redirect, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -20,10 +20,19 @@ export const actions: Actions = {
 
 		if (!name) return fail(400, { error: 'Name is required.' });
 
-		const updates: Record<string, unknown> = { name, description, order };
+		const categories = await getCategories();
+		const category = categories.find((c) => c.id === params.id);
+		if (!category) error(404, 'Category not found');
+
+		const newSlug = slugify(name);
+		const updates: Record<string, unknown> = { name, description, order, slug: newSlug };
 
 		if (imageFile && imageFile.size > 0) {
 			updates.previewImage = await saveImage('categories', imageFile);
+		}
+
+		if (newSlug !== category.slug) {
+			await renamePostsFile(category.slug, newSlug);
 		}
 
 		await updateCategory(params.id, updates);
