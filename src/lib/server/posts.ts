@@ -7,6 +7,7 @@ const STATIC_DIR = path.join(process.cwd(), 'static');
 export interface Post {
 	id: string;
 	caption: string;
+	description?: string;
 	image: string;
 	createdAt: string;
 }

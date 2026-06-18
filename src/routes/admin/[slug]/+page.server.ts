@@ -32,10 +32,12 @@ export const actions: Actions = {
 			return fail(400, { error: 'Image must be under 10 MB.' });
 		}
 
+		const description = formData.get('description')?.toString().trim() ?? '';
 		const imagePath = await saveImage(params.slug, imageFile);
 		await addPost(params.slug, {
 			id: randomUUID(),
 			caption,
+			description: description || undefined,
 			image: imagePath,
 			createdAt: new Date().toISOString()
 		});
@@ -57,6 +59,7 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const postId = formData.get('id')?.toString();
 		const caption = formData.get('caption')?.toString().trim() ?? '';
+		const description = formData.get('description')?.toString().trim() ?? '';
 		if (!postId) return fail(400, { error: 'Missing post ID.' });
 
 		const posts = await getPosts(params.slug);
@@ -64,6 +67,7 @@ export const actions: Actions = {
 		if (!post) return fail(404, { error: 'Post not found.' });
 
 		post.caption = caption;
+		post.description = description || undefined;
 		await savePosts(params.slug, posts);
 		redirect(303, `/admin/${params.slug}`);
 	}

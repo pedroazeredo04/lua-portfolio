@@ -41,6 +41,15 @@
 				class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/20"
 			></textarea>
 		</div>
+		<div>
+			<label class="mb-1 block text-sm text-white/60" for="description">Description (optional)</label>
+			<textarea
+				id="description"
+				name="description"
+				rows="3"
+				class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/20"
+			></textarea>
+		</div>
 		{#if form?.error}
 			<p class="text-sm text-red-400">{form.error}</p>
 		{/if}
@@ -62,13 +71,20 @@
 			<div class="relative overflow-hidden rounded-xl border border-white/10 bg-black/20">
 				<img src={post.image} alt={post.caption} class="h-40 w-full object-cover" />
 				{#if editingId === post.id}
-					<form method="POST" action="?/editCaption" use:enhance={() => async ({ update }) => { await update(); editingId = null; }} class="p-2">
+					<form method="POST" action="?/editCaption" use:enhance={() => async ({ update }) => { await update(); editingId = null; }} class="p-2 space-y-1">
 						<input type="hidden" name="id" value={post.id} />
 						<textarea
 							name="caption"
 							rows="2"
+							placeholder="Caption"
 							class="w-full rounded border border-white/10 bg-white/5 px-2 py-1 text-xs text-white focus:outline-none focus:ring-1 focus:ring-white/20"
 						>{post.caption}</textarea>
+						<textarea
+							name="description"
+							rows="2"
+							placeholder="Description (expandable)"
+							class="w-full rounded border border-white/10 bg-white/5 px-2 py-1 text-xs text-white focus:outline-none focus:ring-1 focus:ring-white/20"
+						>{post.description ?? ''}</textarea>
 						<div class="mt-1 flex gap-1">
 							<button
 								type="submit"

@@ -21,7 +21,9 @@
 	let isDragging = $state(false);
 	let dragState: { startX: number; startY: number; startScrollLeft: number; startScrollTop: number; hasMoved: boolean } | null = null;
 
-	function open(post: Post) { lightbox = post; lightboxOpen.set(true); zoom = 1; baseWidth = null; baseHeight = null; }
+	let descOpen = $state(false);
+
+	function open(post: Post) { lightbox = post; lightboxOpen.set(true); zoom = 1; baseWidth = null; baseHeight = null; descOpen = false; }
 	function close() { lightbox = null; lightboxOpen.set(false); zoom = 1; isDragging = false; dragState = null; }
 
 	function onImgLoad() {
@@ -160,7 +162,26 @@
 				style:max-height={zoom > 1 && baseWidth != null ? 'none' : null}
 			/>
 			{#if lightbox.caption}
-				<p class="lightbox__caption">{lightbox.caption}</p>
+				<div class="lightbox__footer" style:width={baseWidth ? `${baseWidth}px` : null}>
+					<div class="lightbox__caption-row">
+						{#if lightbox.description}
+							<button
+								class="lightbox__desc-toggle"
+								class:lightbox__desc-toggle--open={descOpen}
+								onclick={(e) => { e.stopPropagation(); descOpen = !descOpen; }}
+								aria-label={descOpen ? 'Hide description' : 'Show description'}
+							>
+								<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+									<path d="M2 4.5L7 9.5L12 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+								</svg>
+							</button>
+						{/if}
+						<p class="lightbox__caption font-script">{lightbox.caption}</p>
+					</div>
+					{#if lightbox.description && descOpen}
+						<p class="lightbox__description">{lightbox.description}</p>
+					{/if}
+				</div>
 			{/if}
 		</div>
 	</div>
